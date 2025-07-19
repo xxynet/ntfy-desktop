@@ -37,10 +37,14 @@ def listen_to_topic(url, topic):
 
 if __name__ == "__main__":
     config_json = load_config()
+
+    threads = []
+
     for server, topics in config_json.items():
         for topic in topics:
             thread = threading.Thread(target=listen_to_topic, args=(server, topic), daemon=True)
             thread.start()
+            threads.append(thread)
     
-    while True:
-        pass
+    for thread in threads:
+        thread.join()
