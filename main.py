@@ -29,10 +29,11 @@ def listen_to_topic(url, topic):
         if line:
             msg_str = line.decode('utf-8')
             msg_json = json.loads(msg_str)
-            title = msg_json.get("title", f"{url.split('://')[-1]}/{topic}")
-            msg = msg_json.get("message", "")
+            event = msg_json.get("event", "")
+            if event == "message":
+                title = msg_json.get("title", f"{url.split('://')[-1]}/{topic}")
+                msg = msg_json.get("message", "")
 
-            if msg:
                 send_notification(title=title, message=msg)
             print(msg_str)
 
