@@ -18,6 +18,7 @@ def send_notification(title, message):
     notification.notify(
         title=title,
         message=message,
+        app_name="ntfy",
         app_icon="msg.ico",
         timeout=5
     )
