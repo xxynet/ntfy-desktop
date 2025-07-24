@@ -12,3 +12,11 @@ By modifying `config.json`, you can subscribe to topics from different servers
     "server2": ["topic3"]
 }
 ```
+
+## Auto Start on Boot
+
+create a shortcut of `start.bat`
+
+Press `Win+R`, type `shell:startup`, enter
+
+Drag the shortcut you've created into the startup folder
