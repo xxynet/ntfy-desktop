@@ -4,6 +4,8 @@ A simple & easy-to-use desktop client for [ntfy](https://github.com/binwiederhie
 
 ![](Screenshot01.png)
 
+![](Screenshot02.png)
+
 By modifying `config.json`, you can subscribe to topics from different servers
 
 ```json
@@ -12,6 +14,11 @@ By modifying `config.json`, you can subscribe to topics from different servers
     "server2": ["topic3"]
 }
 ```
+
+## Features
+
+- [x] Support emoji
+- [x] Support click url
 
 ## Auto Start on Boot
 
