@@ -31,7 +31,7 @@ def load_config(file="config.json"):
 async def send_notification(title, message, url=None):
     system = platform.system()
 
-    notifier = DesktopNotifier()
+    notifier = DesktopNotifier(app_name="ntfy")
     await notifier.send(
         title=title,
         message=message,
