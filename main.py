@@ -43,37 +43,40 @@ async def send_notification(title, message, url=None):
 
 
 def listen_to_topic(url, topic, loop):
-    resp = requests.get(f"{url}/{topic}/json", stream=True)
-    for line in resp.iter_lines():
-        if line:
-            msg_str = line.decode('utf-8')
-            msg_json = json.loads(msg_str)
-            event = msg_json.get("event", "")
-            if event == "message":
-                raw_title = msg_json.get("title", "")
-                title = msg_json.get("title", f"{url.split('://')[-1]}/{topic}")
-                msg = msg_json.get("message", "")
-                tags = msg_json.get("tags", [])
-                click_url = msg_json.get("click", "")
-                if tags:
-                    title_emoji = ""
-                    with open("emoji.json", "r", encoding="utf-8") as f:
-                        emoji_json = json.loads(f.read())
-                    for i in range(len(tags)):
-                        emoji = emoji_json.get(tags[i], "")
-                        if emoji:
-                            title_emoji += f"{emoji} "
-                    if raw_title:
-                        title = title_emoji + title
-                    else:
-                        msg = title_emoji + msg
+    try:
+        resp = requests.get(f"{url}/{topic}/json", stream=True)
+        for line in resp.iter_lines():
+            if line:
+                msg_str = line.decode('utf-8')
+                msg_json = json.loads(msg_str)
+                event = msg_json.get("event", "")
+                if event == "message":
+                    raw_title = msg_json.get("title", "")
+                    title = msg_json.get("title", f"{url.split('://')[-1]}/{topic}")
+                    msg = msg_json.get("message", "")
+                    tags = msg_json.get("tags", [])
+                    click_url = msg_json.get("click", "")
+                    if tags:
+                        title_emoji = ""
+                        with open("emoji.json", "r", encoding="utf-8") as f:
+                            emoji_json = json.loads(f.read())
+                        for i in range(len(tags)):
+                            emoji = emoji_json.get(tags[i], "")
+                            if emoji:
+                                title_emoji += f"{emoji} "
+                        if raw_title:
+                            title = title_emoji + title
+                        else:
+                            msg = title_emoji + msg
 
 
-                asyncio.run_coroutine_threadsafe(
-                    send_notification(title=title, message=msg, url=click_url),
-                    loop
-                )
-            print(msg_str)
+                    asyncio.run_coroutine_threadsafe(
+                        send_notification(title=title, message=msg, url=click_url),
+                        loop
+                    )
+                print(msg_str)
+    except Exception as e:
+        print(str(e))
 
 if __name__ == "__main__":
     config_json = load_config()
